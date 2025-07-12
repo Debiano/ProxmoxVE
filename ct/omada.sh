@@ -36,12 +36,6 @@ function update_script() {
     exit 1
   fi
 
-  curl -fsSL "https://www.mongodb.org/static/pgp/server-${MONGODB_VERSION}.asc" | gpg -o /usr/share/keyrings/mongodb-server-${MONGODB_VERSION}.gpg --dearmor
-  echo "deb [signed-by=/usr/share/keyrings/mongodb-server-${MONGODB_VERSION}.gpg] http://repo.mongodb.org/apt/ubuntu $(grep '^VERSION_CODENAME=' /etc/os-release | cut -d'=' -f2)/mongodb-org/${MONGODB_VERSION} multiverse" >/etc/apt/sources.list.d/mongodb-org-${MONGODB_VERSION}.list
-  $STD apt-get update
-  $STD apt-get install -y --only-upgrade mongodb-org
-  msg_ok "Updated MongoDB to $MONGODB_VERSION"
-
   msg_info "Checking if right Azul Zulu Java is installed"
   java_version=$(java -version 2>&1 | awk -F[\"_] '/version/ {print $2}')
   if [[ "$java_version" =~ ^1\.8\.* ]]; then
